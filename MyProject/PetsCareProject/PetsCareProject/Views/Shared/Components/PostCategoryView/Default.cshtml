@@ -1,0 +1,9 @@
+﻿@using PetsCareProject.Models;
+@model IList<tblCategories>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li><a asp-controller="Home" asp-action="BlogOfType" asp-route-categoryid="@item.CategoryID">@item.CategoryName</a></li>
+    }
+</ul>

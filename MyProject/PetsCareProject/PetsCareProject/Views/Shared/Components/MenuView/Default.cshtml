@@ -1,0 +1,41 @@
+﻿@using PetsCareProject.Models;
+@using PetsCareProject.Utilities;
+@model IList<tblMenu>
+
+    <nav class="header__menu">
+        <ul style="list-style: none">
+            @foreach (var menu in Model.Where(m=>m.Levels == 1).OrderBy(n => n.MenuOrder))
+            {
+                var Pid = menu.MenuID;
+                //Lấy id của menu cấp 1
+                var Smenu = Model.Where(p => p.ParentID == Pid).OrderBy(p => p.MenuOrder).ToList();
+                //Lấy ra danh sách menu có id trùng với Pid
+
+                @if(Smenu.Count == 0)
+                {
+                    //Nếu MenuID bằng 1 thêm class active >< xoá class active
+                    if (Pid == 1)
+                    {
+                    <li class="active"><a style="cursor: pointer" asp-controller="@menu.ControllerName" asp-action="@menu.ActionName">@menu.MenuName</a></li>
+                    }else
+                    {
+                    <li> <a style="cursor: pointer" asp-controller="@menu.ControllerName" asp-action="@menu.ActionName">@menu.MenuName</a></li>
+                    }
+                }
+                else
+                {
+                <li class="" style="display: inline-block">
+                    <a href="#">@menu.MenuName</a>
+                    <ul class="header__menu__dropdown">
+                        @foreach (var smn in Smenu)
+                        {
+                            <li><a href="#">@smn.MenuName</a></li>
+                        }
+                    </ul>
+                </li>
+
+                    
+                }
+            }
+        </ul>
+    </nav>

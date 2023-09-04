@@ -1,0 +1,208 @@
+﻿@model PetsCareProject.Models.tblBookingCare;
+@using PetsCareProject.Utilities;
+
+@if (TempData["AlertMessages"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <strong>Success</strong> @TempData["AlertMessages"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <p>@TempData["ErrorMessage"]</p>
+    </div>
+}
+
+
+
+
+<!-- Contact Form End -->
+
+
+<!-- Contact Form Begin -->
+<div class="contact-form spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="contact__form__title section-title">
+                    <h2>Đặt Lịch Khám</h2>
+                </div>
+            </div>
+        </div>
+        <form asp-action="BookingCare" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
+            <div asp-validation-summary="All"></div>
+            <!--FoodID-->
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="FullName">Thông tin chủ nuôi</label>
+                    <input asp-for="FullName" type="text" placeholder="Họ và tên chủ vật nuôi..." required>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label asp-for="PhoneNumber">Số điện thoại liên hệ</label>
+                    <input asp-for="PhoneNumber" type="text" placeholder="Số điện thoại..." required>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label asp-for="Email">Địa chỉ Email</label>
+                    <input asp-for="Email" type="email" placeholder="email..." required>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label asp-for="PetName">Giống vật nuôi</label>
+                    <input asp-for="PetName" type="text" placeholder="Vd: chó poodle, chó cỏ, mèo ta...">
+                </div>
+
+                @if (ViewBag.listofService == null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Yêu cầu nhập loại dịch vụ
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group col-md-6" style="display: flex; flex-direction: column">
+                        <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
+                        <label asp-for="ServiceID">Chuyên khoa - Dịch vụ</label>
+                        <select asp-for="ServiceID" class="form-control"
+                            asp-items="@(new SelectList(ViewBag.listofService, "ServiceID", "ServiceName"))">
+                            <option value="">-- Chọn dịch vụ --</option>
+                        </select>
+                    </div>
+                }
+
+                <div class="form-group col-md-6" style="display: flex; flex-direction: column">
+                    <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
+                    <label>Bác sĩ</label>
+                    <select asp-for="DoctorID" class="form-control" id="DoctorID" name="DoctorID"
+                            asp-items="@(new SelectList(string.Empty, "DoctorID", "DoctorName"))">
+                        
+                    </select>
+                </div>
+                <div class="form-group col-md-6" style="display: flex; flex-direction: column">
+                    <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
+                    <label>Khung giờ khám bệnh</label>
+                    <select class="form-control" id="ScheduleID" name="ScheduleID" asp-for="ScheduleID"
+                            asp-items="@(new SelectList(string.Empty, "ScheduleID", "TimeSlot"))">
+                    </select>
+                </div>
+                
+
+
+                <div class="form-group d-none">
+                    <input asp-for="Time" class="form-control" value="@Functions.getCurrentDate()" />
+                </div>
+
+                <div class="form-group d-none">
+                    <input asp-for="IsActive" autocomplete="off" class="form-control" value="True" />
+                </div>
+
+                <div class="form-group d-none">
+                    <input asp-for="StatusBooking" autocomplete="off" class="form-control" value="false" />
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="image">Hình ảnh về tình trạng:</label>
+                    <input type="file" name="image" id="image" class="form-control-file">
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label asp-for="Description">Tình trang:</label>
+                    <textarea asp-for="Description" placeholder="Tình trạng vật nuôi"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-12 text-center">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-lg btn-warning p-2">Quay lại</a>
+                <button type="submit" style="margin-left: 26px; border-radius: 4px" class="site-btn">ĐĂNG KÝ LỊCH KHÁM</button>
+
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="~/assets/js/jquery-3.3.1.min.js"></script>
+
+
+
+<script>
+        var items = "<option value='0'>Select</option>";
+        $('#DoctorID').html(items);
+        $('#ScheduleID').html(items);
+
+    $(document).ready(function () {
+        // show the alert
+        setTimeout(function () {
+            $(".alert").alert('close');
+        }, 5000);
+    });
+
+    //kiêm tra select có dữ liệu
+    function validateForm() {
+        // Lấy các thẻ select bằng cách sử dụng class hoặc id của chúng
+        var serviceSelect = document.getElementById('ServiceID');
+        var doctorSelect = document.getElementById('DoctorID');
+        var scheduleSelect = document.getElementById('ScheduleID');
+
+        // Kiểm tra xem các thẻ select có dữ liệu không
+        if (serviceSelect.value === '0' || doctorSelect.value === '0' || scheduleSelect.value === '0') {
+            alert('Vui lòng chọn đầy đủ thông tin');
+            return false; // Ngăn người dùng submit form
+        }
+
+        return true; // Cho phép người dùng submit form
+    }
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ServiceID').change(function () {
+            var url = '@Url.Action("GetDoctors", "Home")';
+            var ddlsource = "#ServiceID";
+            $.getJSON(url, { ServiceID: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#DoctorID").empty();
+                $.each(data, function (i, doctor) {
+                    items += "<option value='" + doctor.value + "' >" + doctor.text + "</option>";
+                });
+                $('#DoctorID').html(items);
+                $('#DoctorID').show(items);
+            });
+        });
+
+        $('#DoctorID').change(function () {
+            var url = '@Url.Action("GetSchedules", "Home")';
+            var ddlsource = "#DoctorID";
+            $.getJSON(url, { DoctorID: $(ddlsource).val() }, function (data) {
+                var items = '';
+                $("#ScheduleID").empty();
+                $.each(data, function (i, schedule) {
+                    items += "<option value='" + schedule.value + "' >" + schedule.text + "</option>";
+                });
+                $('#ScheduleID').html(items);
+                $('#ScheduleID').show(items);
+
+                // Kiểm tra khung giờ đã được đặt trước hay chưa
+                var selectedSchedule = $('#ScheduleID').val();
+                if (selectedSchedule !== '' && selectedSchedule !== '0') {
+                    var checkUrl = '@Url.Action("CheckSchedule", "Home")';
+                    $.getJSON(checkUrl, { scheduleId: selectedSchedule }, function (result) {
+                        if (result.isBooked == true) {
+                            alert('Khung giờ đã được đặt bởi người dùng khác. Vui lòng chọn khung giờ khác.');
+                            $('#ScheduleID').val('0');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+
+

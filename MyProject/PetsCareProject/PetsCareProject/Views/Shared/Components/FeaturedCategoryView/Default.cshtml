@@ -1,0 +1,11 @@
+﻿@using PetsCareProject.Models;
+@model IList<tblCategories>
+
+<div class="featured__controls">
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li class="filter-button" data-filter="@item.DataFilter">@item.CategoryName</li>
+        }
+    </ul>
+</div>

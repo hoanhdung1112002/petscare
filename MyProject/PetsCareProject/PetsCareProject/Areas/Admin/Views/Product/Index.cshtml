@@ -1,0 +1,69 @@
+﻿@using PetsCareProject.Models;
+@using PetsCareProject.Utilities;
+@model IList<ViewProductFeatured>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h2>Tổng Hợp Sản Phẩm</h2>
+    </div>
+    <p>
+        <a type="button" class="btn btn-success" asp-area="Admin" asp-controller="Product" asp-action="Create">
+            <i class="bi bi-file-earmark-text me-1"></i>
+            Thêm sản phẩm mới
+        </a>
+    </p>
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body mt-4">
+                        <table class="table table-borderless datatable">
+                            <thead>
+                                <tr>
+                                    <th class="col-1 text-center">STT</th>
+                                    <th class="col-1 text-center">Tên Sản Phẩm</th>
+                                    <th class="col-1 text-center">Hình ảnh</th>
+                                    <th class="col-1 text-center">Danh Mục</th>
+                                    <th class="col-1 text-center">Giá</th>
+                                    <th class="col-1 text-center">Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    string url = Functions.TitleSlugGeneration("product", item.ProductName, item.ProductID);
+                                    <tr>
+                                        <th class="text-center" scope="row">@item.ProductID</th>
+                                        <td>
+                                            <a href="/@url" class="text-primary">@item.ProductName</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <img style="width: 60px; height: 60px; object-fit: cover; object-position: center; border-radius: 5px;" src="@item.Image">
+                                        </td>
+
+                                        <td class="text-center">@item.CategoryName</td>
+                                        <td class="text-center">@String.Format("{0:0,00}", item.TotalPrice) đ</td>
+                                        <td class="text-center">
+                                            <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@item.ProductID" class="btn btn-primary btn-sm"
+                                               title="Sửa Thông Tin Sản Phẩm">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-area="Admin" asp-controller="Product" asp-action="Delete" asp-route-id="@item.ProductID" class="btn btn-danger btn-sm"
+                                               title="Xoá Sản Phẩm">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+

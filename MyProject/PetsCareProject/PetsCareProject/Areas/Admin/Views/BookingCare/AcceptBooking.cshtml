@@ -1,0 +1,100 @@
+﻿@using PetsCareProject.Models;
+@model IList<ViewBookingCare>
+
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h2>Tổng Hợp Lịch Đăng Ký Khám</h2>
+    </div>
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body mt-4">
+                        <table class="table table-borderless datatable">
+                            <thead>
+                                <tr>
+                                    <th class="col-1 text-center">Chủ vật nuôi</th>
+                                    <th class="col-1 text-center">Giống vật nuôi</th>
+                                    <th class="col-1 text-center">Tình trạng</th>
+                                    <th class="col-1 text-center">Dịch vụ</th>
+                                    <th class="col-1 text-center">Thời gian KH tới</th>
+                                    <th class="col-1 text-center">Trạng thái</th>
+                                    <th class="col-1 text-center">Chức năng</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+
+                                        <td class="text-center">
+                                            <a asp-area="Admin" asp-controller="BookingCare" asp-action="BookDetails" asp-route-id="@item.BookingCareID" class="text-primary">@item.FullName</a>
+                                        </td>
+
+                                        <td class="text-center">@item.PetName</td>
+                                        <td class="text-center">
+                                            <img id="myImg" style="width: 60px; height: 60px; object-fit: cover; object-position: center; border-radius: 5px;" src="@item.Image" data-toggle="modal" data-target="#imageModal">
+                                        </td>
+                                        <td class="text-center">@item.ServiceName</td>
+                                        <td class="text-center">@item.TimeSlot</td>
+
+                                        <td class="text-center">
+                                            @if (item.StatusBooking.HasValue)
+                                            {
+                                                if (item.StatusBooking.Value)
+                                                {
+                                                    <span>Đã được duyệt</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Chưa được duyệt</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>Không có trạng thái</span>
+                                            }
+                                        </td>
+
+
+
+
+                                        <td class="text-center">
+                                            @if (item.StatusBooking.HasValue && !item.StatusBooking.Value)
+                                            {
+                                                <a asp-area="Admin" asp-controller="BookingCare" asp-action="Accept" asp-route-id="@item.BookingCareID" class="btn btn-success btn-sm approve-link" title="Phê duyệt lịch" data-statusbooking="@item.StatusBooking.ToString().ToLower()">
+                                                    <i class="bi bi-check-circle"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <span></span> <!-- Hoặc bạn có thể hiển thị nút vô hiệu hóa/ẩn đi -->
+                                            }
+                                            <a asp-area="Admin" asp-controller="BookingCare" asp-action="Edit" asp-route-id="@item.BookingCareID" class="btn btn-primary btn-sm"
+                                               title="Chỉnh sửa">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-area="Admin" asp-controller="BookingCare" asp-action="Delete" asp-route-id="@item.BookingCareID" class="btn btn-danger btn-sm"
+                                               title="Xoá thông tin" onclick="return confirm('Bạn có chắc chắn muốn xoá thông tin lịch này?')">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+
+
+

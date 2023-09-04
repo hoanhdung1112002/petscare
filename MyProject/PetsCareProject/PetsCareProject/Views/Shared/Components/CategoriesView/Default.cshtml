@@ -1,0 +1,17 @@
+﻿@using PetsCareProject.Models;
+@model IList<tblCategories>
+
+<div class="hero__categories">
+    <div class="hero__categories__all">
+        <i class="fa fa-bars"></i>
+        <span>Tất cả sản phẩm</span>
+    </div>
+    <ul>
+
+        @foreach (var item in Model)
+        {
+            //Sử dụng vòng lặp for duyệt qua tất cả các phần tử của Categories
+            <li><a asp-controller="Home" asp-action="ProductOfType" asp-route-categoryid="@item.CategoryID">@item.CategoryName</a></li>
+        }
+    </ul>
+</div>

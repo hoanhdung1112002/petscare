@@ -1,0 +1,139 @@
+﻿@model PetsCareProject.Models.tblProduct;
+<!-- Breadcrumb Section Begin -->
+<style>
+    .single_price {
+        background-color: #199bc42e;
+        border: 1px dashed #199bc4;
+        padding: 10px;
+        border-radius: 3px;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        margin: 0 0 10px;
+        color: #000;
+    }
+
+    .row_info {
+        margin-bottom: 10px;
+    }
+    .row_price {
+        display: flex;
+        align-items: center;
+    }
+
+    .row_price_left {
+        margin-bottom: 10px;
+    }
+    .current_price {
+        white-space: nowrap;
+        color: #f31515;
+        font-weight: 500;
+        font-size: 24px;
+    }
+
+    .old_price {
+        white-space: nowrap;
+        color: #f31515;
+        font-weight: 500;
+        font-size: 16px;
+    }
+    .save
+</style>
+<section class="breadcrumb-section set-bg" data-setbg="assets/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Tổng Hợp Sản Phẩm</h2>
+                    <div class="breadcrumb__option">
+                        <a href="./index.html">Trang chủ</a>
+                        <a href="./index.html">Chi tiết sản phẩm</a>
+                        <span>@Html.DisplayFor(model => model.ProductName)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-md-5">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large"
+                             src="@Html.DisplayFor(model => model.Image)" alt="">
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-7">
+                <div class="product__details__text">
+                    <h3>
+                        @Html.DisplayFor(model => model.ProductName)
+                    </h3>
+                    <div class="single_price">
+                        <div class="row_info">
+                            <span>Giảm giá</span>
+                            <span style="color: #f31515;">@Html.DisplayFor(model => model.Discount)%</span>
+                            <span>tưng bừng khai trương chi nhánh mới!</span>
+                        </div>
+                        <div class="row_price">
+                            <div class="row_price_left">
+                                <span class="current_price">
+                                    @{
+                                    // Lấy giá trị TotalPrice từ model
+                                    decimal totalPrice = Model.TotalPrice;
+                                    // Định dạng giá trị theo kiểu tiền Việt Nam
+                                    string formattedPrice = totalPrice.ToString("N0") + " đ";
+                                    }
+
+                                    @Html.Raw(formattedPrice)
+                                </span>
+                            </div>
+                            <div class="row_price_right">
+                                <span style="margin-left: 20px">Giá gốc: </span>
+                                <span class="old_price">
+                                    @{
+                                        // Lấy giá trị TotalPrice từ model
+                                        decimal Price = Model.Price;
+                                        // Định dạng giá trị theo kiểu tiền Việt Nam
+                                        string forPrice = Price.ToString("N0") + " đ";
+                                    }
+
+                                    @Html.Raw(forPrice)
+                                </span>
+                            </div>
+                        </div>
+                        <div class="saving">
+                            <span class="saving_price">Tiết kiệm: </span>
+                            <span style="color: #f31515;">
+                                @{
+                                    // Lấy giá trị TotalPrice từ model
+                                    decimal tk = Model.TotalPrice - Model.Price;
+                                    // Định dạng giá trị theo kiểu tiền Việt Nam
+                                    string fortk = tk.ToString("N0") + " đ";
+                                }
+
+                                @Html.Raw(fortk)
+                            </span>
+                        </div>
+                    </div>
+                    <p>
+                        @Html.Raw(Model.Description)
+                    </p>
+                    <div class="single_price" style="border-color: #f31515">
+                        <a href="#" class="primary-btn">Mua hàng nhanh
+                        </a>
+                            <span style="display: block; margin-top: 10px">Gọi điện xác nhận và giao hàng tận nơi</span>
+                        
+                    </div>
+                   
+                    <p>Hotline: 0988.817.861 - Tel: 0935.668.070</p>
+    
+               
+                </div>
+    </div>
+</section>
+<!-- Product Details Section End -->

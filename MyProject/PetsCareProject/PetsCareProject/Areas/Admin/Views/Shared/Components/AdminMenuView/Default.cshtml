@@ -1,0 +1,81 @@
+﻿@using PetsCareProject.Areas.Admin.Models
+@model IList<tblAdminMenu>
+
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link " href="index.html">
+                <i class="bi bi-grid"></i>
+                <span>Danh Mục Điều Khiển</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+        @foreach (var item in Model.Where(m => m.ItemLevel == 1).OrderBy(n => n.ItemOrder))//lặp qua menu cấp 1
+        {
+            var Pid = item.AdminMenuID;//lấy ra id
+
+            var Smenu = Model.Where(p => p.ParentLevel == Pid).OrderBy(p => p.ItemOrder).ToList();//lọc ra menu cấp 2
+                                                                                                  //có id cha ở menu cấp 1
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#@item.ItemTarget" data-bs-toggle="collapse" href="">
+                    <i class="@item.Icon"></i>
+                    <span>@item.ItemName</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="@item.IdName" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    @foreach (var smn in Smenu)
+                    {
+                        <li>
+                            <a href="/Admin/@smn.ControllerName/@smn.ActionName">
+                                <i class="bi bi-circle"></i>
+                                <span>@smn.ItemName</span>
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </li>
+        }
+
+        <li class="nav-heading">Các Chức Năng Khác</li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="!Areas"  asp-controller="Home" asp-action="Index">
+                <i class="bi bi-person"></i>
+                <span>Về Trang Hiển Thị</span>
+            </a>
+        </li><!-- End Profile Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="Admin" asp-controller="Account" asp-action="Index">
+                <i class="bi bi-envelope"></i>
+                <span>Quản Trị Tài Khoản</span>
+            </a>
+        </li><!-- End Contact Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="Admin" asp-controller="Register" asp-action="Index">
+                <i class="bi bi-card-list"></i>
+                <span>Đăng Ký Tài Khoản</span>
+            </a>
+        </li><!-- End Register Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="Admin" asp-controller="Login" asp-action="Index">
+                <i class="bi bi-box-arrow-in-right"></i>
+                <span>Đăng Nhập</span>
+            </a>
+        </li><!-- End Login Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" asp-area="Admin" asp-controller="Home" asp-action="Logout">
+                <i class="bi bi-box-arrow-in-left"></i>
+                <span>Đăng Xuất</span>
+            </a>
+        </li><!-- End Login Page Nav -->
+    </ul>
+
+</aside><!-- End Sidebar-->

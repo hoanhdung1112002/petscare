@@ -1,0 +1,54 @@
+﻿@using PetsCareProject.Models;
+@model IList<tblFooter>
+
+<div class="row">
+    @foreach (var menu in Model.Where(m => m.Levels == 1).OrderBy(n => n.FooterOrder))
+    {
+        var Pid = menu.FooterID;
+        //Lấy id của menu cấp 1
+        var Smenu = Model.Where(p => p.ParentID == Pid).OrderBy(p => p.FooterOrder).ToList();
+        //Lấy ra danh sách menu có id trùng với Pid
+
+        @if (Smenu.Count == 0)
+        {
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__widget">
+                    <h6 style="text-transform:uppercase">@menu.FooterName</h6>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__widget">
+                    <h6 style="text-transform:uppercase;line-height: 26px;">@menu.FooterName</h6>
+                    @if (Pid == 4)
+                    {
+                        <p>Mọi thắc mắc xin vui lòng liên hệ với chúng tội thông qua địa chỉ Email.</p>
+                        <form action="#">
+                            <input type="text" placeholder="Nhập email của bạn">
+                            <button type="submit" class="site-btn">Phản hồi</button>
+                        </form>
+                        <div class="footer__widget__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    }
+                    else
+                    {
+                        <ul style="width: 100%">
+                            @foreach (var smn in Smenu)
+                            {
+                                <li style="line-height: 36px;">@smn.FooterName</li>
+                            }
+                        </ul>
+
+                    }
+                    
+                </div>
+            </div>
+        }
+    }
+</div>

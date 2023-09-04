@@ -1,0 +1,111 @@
+﻿@using PetsCareProject.Utilities;
+@model PetsCareProject.Models.tblBookingCare;
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h2>Xác Nhận Sửa Thông Tin Cho Đặt Lịch</h2>
+    </div>
+    <div class="container shadown p-5">
+        <form method="post" asp-action="Edit">
+            <input type="text" class="form-control mb-3" asp-for="BookingCareID" type="hidden" />
+            <div asp-validation-summary="All"></div>
+            <div class="form-row">
+                <div class="form-group col-md-10">
+                    <label asp-for="FullName">Thông tin chủ nuôi</label>
+                    <input type="text" autocomplete="off" class="form-control mb-3" asp-for="FullName" placeholder="Họ và tên chủ vật nuôi" />
+                </div>
+
+                <div class="form-group col-md-10">
+                    <label asp-for="PhoneNumber">Số điện thoại liên hệ</label>
+                    <input type="text" autocomplete="off" class="form-control mb-3" asp-for="PhoneNumber" placeholder="Số điện thoại" />
+                </div>
+
+                <div class="form-group col-md-10">
+                    <label asp-for="Email">Địa chỉ Email</label>
+                    <input type="text" autocomplete="off" class="form-control mb-3" asp-for="Email" placeholder="Email" />
+                </div>
+
+                <div class="form-group col-md-10">
+                    <label asp-for="PetName">Vd: chó poodle, chó cỏ, mèo ta...</label>
+                    <input type="text" autocomplete="off" class="form-control mb-3" asp-for="PetName" placeholder="Tên thú cưng" />
+                </div>
+
+                <div class="form-group col-md-10" style="display: flex; flex-direction: column">
+                    <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
+                    <label asp-for="ServiceID">Chuyên khoa - Dịch vụ</label>
+                    <select asp-for="ServiceID" class="form-control" id=""
+                            asp-items="@(new SelectList(ViewBag.listService, "Value", "Text"))">
+                    </select>
+                </div>
+
+                <div class="form-group col-md-10" style="display: flex; flex-direction: column">
+                    <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
+                    <label asp-for="DoctorID">Bác sĩ</label>
+                    <select asp-for="DoctorID" class="form-control" id=""
+                            asp-items="@(new SelectList(ViewBag.listDoctor, "Value", "Text"))">
+                    </select>
+                </div>
+
+                <div class="form-group col-md-10" style="display: flex; flex-direction: column">
+                    <div class="alert-danger" asp-validation-summary="ModelOnly"></div>
+                    <label asp-for="ScheduleID">Khung giờ khám bệnh</label>
+                    <select asp-for="ScheduleID" class="form-control" id=""
+                            asp-items="@(new SelectList(ViewBag.listSchedule, "Value", "Text"))">
+                    </select>
+                </div>
+
+
+
+
+                <div class="form-group d-none">
+                    <input asp-for="Time" class="form-control" value="@Functions.getCurrentDate()" />
+                </div>
+
+
+                <div class="form-group col-md-8">
+                    <label class="control-label">Hình ảnh về tình trạng của thú cưng: </label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-success" type="button" onclick="openDialog()">Chọn hình ảnh</button>
+                        </div>
+                        <input type="text" class="form-control" asp-for="Image" id="file_input" aria-describedby="button-addon2">
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label asp-for="Description">Mô tả</label>
+                    <textarea id="Description" asp-for="Description" class="form-control"></textarea>
+                </div>
+
+                <div class="form-group col-md-8 mt-3 mb-3">
+                    <label>
+                        @Html.CheckBox("IsActive", false)
+                        Hiển thị
+                    </label>
+                </div>
+
+                <div class="form-group col-md-8 mt-3 mb-3">
+                    <label>
+                        @Html.CheckBox("StatusBooking", true)
+                        Cập nhật lại trạng thái
+                    </label>
+                </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-lg btn-primary p-2">
+                <i class="bi bi-file-plus-fill"></i>
+                Lưu
+            </button>
+            <a asp-controller="BookingCare" asp-action="Index" class="btn btn-lg btn-warning p-2">Quay lại</a>
+        </form>
+    </div>
+</main>
+@{
+    var summerNote = new PetsCareProject.Areas.Admin.Models.SummerNote("#Description");
+    <partial name="_SummerNote" model="summerNote" />
+}

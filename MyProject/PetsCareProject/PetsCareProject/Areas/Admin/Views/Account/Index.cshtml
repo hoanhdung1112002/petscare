@@ -1,0 +1,54 @@
+﻿@using PetsCareProject.Areas.Admin.Models;
+@model IList<tblAdminUser>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h2>Danh Sách Tài Khoản Quản Trị</h2>
+    </div>
+    <section class="section dashboard">
+        <div class="row">
+            <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body mt-4">
+                        <table class="table table-borderless datatable">
+                            <thead>
+                                <tr>
+                                    <th class="col-1 text-center">STT</th>
+                                    <th class="col-1 text-center">Tài khoản</th>
+                                    <th class="col-1 text-center">Email</th>
+                                    <th class="col-1 text-center">Mật khẩu mã hoá</th>
+                                    <th class="col-1 text-center">Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <th class="text-center" scope="row">@item.UserID</th>
+                                        <td class="text-center">
+                                            <a asp-area="Admin" asp-controller="Account" asp-action="Details" asp-route-id="@item.UserName" class="text-primary">@item.UserName</a>
+                                        </td>
+                                        <td class="text-center"> @item.Email</td>
+                                        <td class="text-center"> @item.Password</td>
+           
+                                        <td class="text-center">
+                                            <a asp-area="Admin" asp-controller="Acount" asp-action="Details" class="btn btn-primary btn-sm"
+                                               title="Xem Chi Tiết">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+

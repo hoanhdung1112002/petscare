@@ -1,0 +1,112 @@
+﻿@model X.PagedList.IPagedList<PetsCareProject.Models.tblPosts>
+@using PetsCareProject.Utilities;
+@using X.PagedList.Mvc.Core;
+
+
+<!-- Blog Section Begin -->
+<section class="blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-5">
+                <div class="blog__sidebar">
+                    <div class="blog__sidebar__search">
+                        <form asp-action="SearchPost" asp-controller="Home" method="get">
+                            <input type="text" name="search" placeholder="Search...">
+                            <button type="submit"><span class="icon_search"></span></button>
+                        </form>
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Danh Mục Bài Viết</h4>
+                        @await Component.InvokeAsync("PostCategoryView")
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Bài Viết Liên Quan</h4>
+                        @await Component.InvokeAsync("RecentPostView")
+                    </div>
+                    <div class="blog__sidebar__item">
+                        <h4>Tìm Kiềm Bằng Từ Khoá</h4>
+                        <div class="blog__sidebar__item__tags">
+                            <a href="#">Apple</a>
+                            <a href="#">Beauty</a>
+                            <a href="#">Vegetables</a>
+                            <a href="#">Fruit</a>
+                            <a href="#">Healthy Food</a>
+                            <a href="#">Lifestyle</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-7">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        string url = Functions.TitleSlugGeneration("post", item.Title, item.PostID);
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="blog__item">
+                                <div class="blog__item__pic">
+                                    <img src="@item.Thumb" alt="" style="min-height: 240px;">
+                                </div>
+                                <div class="blog__item__text">
+                                    <ul>
+                                        <li><i class="fa fa-calendar-o"></i> @item.CreatedDate?.ToString("dd-MM-yyyy")</li>
+                                        <li><i class="fa fa-user-o"></i> @item.Author</li>
+                                    </ul>
+                                    <h5>
+                                        <a style="display: -webkit-box;
+                                           -webkit-line-clamp: 2;
+                                           -webkit-box-orient: vertical;
+                                           overflow: hidden;" href="#">@item.Title</a>
+                                    </h5>
+                                    <p style=" display: -webkit-box;
+                                       -webkit-line-clamp: 2;
+                                       -webkit-box-orient: vertical;
+                                       overflow: hidden;">
+                                        @item.Abstract
+                                    </p>
+                                    <a href="/@url" class="blog__btn">ĐỌC THÊM <span class="arrow_right"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-lg-12">
+                        <div class="pagination">
+                            @Html.PagedListPager(Model, page=>Url.Action("Blog", new{page = page}))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        list-style-type: none;
+        padding: 0;
+    }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a {
+            color: black;
+            text-decoration: none;
+            padding: 6px 16px;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+        }
+
+            .pagination a.active {
+                background-color: dodgerblue;
+                color: white;
+                border: 1px solid dodgerblue;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #ddd;
+            }
+
+</style>
